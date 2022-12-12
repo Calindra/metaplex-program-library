@@ -27,10 +27,11 @@ shank = { version = "0.0.11" }
 serde = { version = "1.0.136", optional = true }
 serde_with = { version = "1.12.0", optional = true }
 mpl-utils = "0.0.5"
+cartesi-solana = { path = "../../../cartesi-solana" }
 
 [dev-dependencies]
 solana-sdk = "1.10"
-solana-program-test = "1.11.5"
+# solana-program-test = "1.11.5"
 
 [lib]
 crate-type = ["cdylib", "lib"]
