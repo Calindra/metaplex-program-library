@@ -6,9 +6,9 @@ use solana_program::{pubkey::Pubkey, account_info::AccountInfo, program_error::P
 use cartesi_solana::anchor_lang::solana_program::entrypoint::ProgramResult;
 
 fn main() -> io::Result<()> {
-    let (program_id, accounts, data) = get_processor_args();
+    let (program_id, accounts, data, delete) = get_processor_args();
     process_instruction(&program_id, &accounts, &data).unwrap();
-    persist_accounts(&accounts);
+    persist_accounts(&accounts, delete);
     Ok(())
 }
 
@@ -17,7 +17,7 @@ fn process_instruction<'a>(
     accounts: &'a [AccountInfo<'a>],
     instruction_data: &[u8],
 ) -> ProgramResult {
-    
+
     if let Err(error) = processor::process_instruction(program_id, accounts, instruction_data) {
         // catch the error so we can print it
         error.print::<MetadataError>();
