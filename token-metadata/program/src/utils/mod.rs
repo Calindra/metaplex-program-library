@@ -96,7 +96,7 @@ pub fn transfer_mint_authority<'a>(
     mint_authority_info: &AccountInfo<'a>,
     token_program_info: &AccountInfo<'a>,
 ) -> ProgramResult {
-    msg!("Setting mint authority");
+    msg!("Setting mint authority: mint {:?}; authority = {:?}", mint_info.key, mint_authority_info.key);
     let accounts = &[
         mint_authority_info.clone(),
         mint_info.clone(),

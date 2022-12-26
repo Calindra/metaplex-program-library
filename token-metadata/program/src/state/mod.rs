@@ -60,11 +60,13 @@ pub trait TokenMetadataAccount: BorshDeserialize {
     fn size() -> usize;
 
     fn is_correct_account_type(data: &[u8], data_type: Key, data_size: usize) -> bool {
+        println!("is_correct_account_type: data = {:?}", data);
         if data.is_empty() {
             return false;
         }
 
         let key: Option<Key> = Key::from_u8(data[0]);
+        println!("is_correct_account_type: key = {:?}; data_type = {:?}; data_size = {:?}; data.len() = {}", key, data_type, data_size, data.len());
         match key {
             Some(key) => {
                 (key == data_type || key == Key::Uninitialized) && (data.len() == data_size)
@@ -97,6 +99,7 @@ where {
             .map_err(|_| MetadataError::DataTypeMismatch)?;
 
         // Check that this is a `token-metadata` owned account.
+        println!("assert owned by {:?} owner {:?}", a, &ID);
         assert_owned_by(a, &ID)?;
 
         Ok(ua)

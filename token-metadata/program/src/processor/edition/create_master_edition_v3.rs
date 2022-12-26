@@ -37,6 +37,7 @@ pub fn process_create_master_edition(
     let token_program_info = next_account_info(account_info_iter)?;
     let system_account_info = next_account_info(account_info_iter)?;
 
+    println!("Metadata::from_account_info {:?} ... (deserialize)", &metadata_account_info.key);
     let metadata = Metadata::from_account_info(metadata_account_info)?;
     let mint: Mint = assert_initialized(mint_info)?;
 
@@ -56,6 +57,7 @@ pub fn process_create_master_edition(
     assert_owned_by(metadata_account_info, program_id)?;
     assert_owned_by(mint_info, &spl_token::id())?;
 
+    println!("Check mint metadata key {:?} vs {:?}", metadata.mint, mint_info.key);
     if metadata.mint != *mint_info.key {
         return Err(MetadataError::MintMismatch.into());
     }
@@ -78,6 +80,7 @@ pub fn process_create_master_edition(
         &[bump_seed],
     ];
 
+    println!("create_or_allocate_account_raw...");
     create_or_allocate_account_raw(
         *program_id,
         edition_account_info,
@@ -101,6 +104,7 @@ pub fn process_create_master_edition(
 
     // While you can't mint any more of your master record, you can
     // mint as many limited editions as you like within your max supply.
+    println!("transfer_mint_authority: mint_info = {:?}; mint_authority_info = {:?}", mint_info.key, mint_authority_info.key);
     transfer_mint_authority(
         edition_account_info.key,
         edition_account_info,

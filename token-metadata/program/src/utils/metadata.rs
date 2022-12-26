@@ -1,4 +1,7 @@
+use std::borrow::Borrow;
+
 use borsh::{maybestd::io::Error as BorshError, BorshDeserialize, BorshSerialize};
+use cartesi_solana::account_manager::set_data;
 use mpl_utils::{create_or_allocate_account_raw, token::get_mint_authority};
 use solana_program::{
     account_info::AccountInfo, entrypoint::ProgramResult, program_option::COption, pubkey,
@@ -61,6 +64,7 @@ pub fn process_create_metadata_accounts_logic(
     add_token_standard: bool,
     collection_details: Option<CollectionDetails>,
 ) -> ProgramResult {
+    println!("data v2 = {:?}", data);
     let CreateMetadataAccountsLogicArgs {
         metadata_account_info,
         mint_info,
@@ -89,6 +93,7 @@ pub fn process_create_metadata_accounts_logic(
             }
         },
     )?;
+    msg!("assert owned by {:?} spl_token::id() {:?}", mint_info, &spl_token::id());
     assert_owned_by(mint_info, &spl_token::id())?;
 
     let metadata_seeds = &[
@@ -118,7 +123,7 @@ pub fn process_create_metadata_accounts_logic(
         metadata_authority_signer_seeds,
     )?;
 
-    println!("Metadata::from_account_info...");
+    println!("Metadata::from_account_info = {:?}...", metadata_account_info.data);
     let mut metadata = Metadata::from_account_info(metadata_account_info)?;
     let compatible_data = data.to_v1();
 
@@ -179,8 +184,9 @@ pub fn process_create_metadata_accounts_logic(
     } else {
         metadata.token_standard = None;
     }
-    println!("puff_out_data_fields...");
+    println!("puff_out_data_fields metadata_account_info.data = {:?}", metadata_account_info.data_len());
     puff_out_data_fields(&mut metadata);
+    println!("1 -> metadata_account_info.data = {:?}", metadata_account_info.data);
 
     let edition_seeds = &[
         PREFIX.as_bytes(),
@@ -190,7 +196,19 @@ pub fn process_create_metadata_accounts_logic(
     ];
     let (_, edition_bump_seed) = Pubkey::find_program_address(edition_seeds, program_id);
     metadata.edition_nonce = Some(edition_bump_seed);
-    metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
+    let mut serialized_metadata = vec![0u8; 0];
+    // metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
+
+    metadata.serialize(&mut serialized_metadata)?;
+    println!("2 -> metadata_account_info.data = {:?}", metadata_account_info.data_len());
+    println!("3 -> metadata = {:?}; metadata_account_info.data = {:?}", metadata, serialized_metadata);
+
+    let diff = metadata_account_info.data_len() - serialized_metadata.len();
+    println!("padding {}", diff);
+    for _ in 0..diff {
+        serialized_metadata.push(0);
+    }
+    set_data(metadata_account_info, serialized_metadata);
 
     Ok(())
 }
