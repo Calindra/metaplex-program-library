@@ -108,7 +108,7 @@ pub fn process_create_metadata_accounts_logic(
     if metadata_account_info.key != &metadata_key {
         return Err(MetadataError::InvalidMetadataKey.into());
     }
-
+    println!("Call create_or_allocate_account_raw...");
     create_or_allocate_account_raw(
         *program_id,
         metadata_account_info,
@@ -118,6 +118,7 @@ pub fn process_create_metadata_accounts_logic(
         metadata_authority_signer_seeds,
     )?;
 
+    println!("Metadata::from_account_info...");
     let mut metadata = Metadata::from_account_info(metadata_account_info)?;
     let compatible_data = data.to_v1();
 
@@ -178,6 +179,7 @@ pub fn process_create_metadata_accounts_logic(
     } else {
         metadata.token_standard = None;
     }
+    println!("puff_out_data_fields...");
     puff_out_data_fields(&mut metadata);
 
     let edition_seeds = &[
