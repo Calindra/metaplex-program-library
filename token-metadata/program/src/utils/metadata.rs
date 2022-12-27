@@ -204,7 +204,7 @@ pub fn process_create_metadata_accounts_logic(
     println!("3 -> metadata = {:?}; metadata_account_info.data = {:?}", metadata, serialized_metadata);
 
     let diff = metadata_account_info.data_len() - serialized_metadata.len();
-    println!("padding {}", diff);
+    println!("do padding {} account key {:?}", diff, metadata_account_info.key);
     for _ in 0..diff {
         serialized_metadata.push(0);
     }
