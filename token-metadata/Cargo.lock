@@ -646,10 +646,12 @@ dependencies = [
  "anchor-spl",
  "base64 0.13.0",
  "bincode",
+ "borsh",
  "generic-array",
  "hex",
  "serde",
  "serde_json",
+ "solana-sdk",
 ]
 
 [[package]]
