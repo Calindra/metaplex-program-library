@@ -196,7 +196,9 @@ pub fn process_create_metadata_accounts_logic(
     metadata.edition_nonce = Some(edition_bump_seed);
     
     // metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
-    serialize_with_padding(metadata_account_info, metadata);
+    serialize_with_padding(metadata_account_info, &metadata);
+    println!("2 -> metadata_account_info.data = {:?}", metadata_account_info.data_len());
+
     Ok(())
 }
 
