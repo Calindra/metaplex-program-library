@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -46,7 +47,8 @@ pub fn process_update_primary_sale_happened_via_token(
     }
 
     metadata.primary_sale_happened = true;
-    metadata.serialize(&mut *metadata_account_info.try_borrow_mut_data()?)?;
+    // metadata.serialize(&mut *metadata_account_info.try_borrow_mut_data()?)?;
+    serialize_with_padding(metadata_account_info, &metadata);
 
     Ok(())
 }

@@ -1,5 +1,6 @@
 use arrayref::{array_mut_ref, array_ref, mut_array_refs};
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::{
     assert_signer, create_or_allocate_account_raw,
     token::{get_mint_authority, get_mint_supply},
@@ -137,7 +138,8 @@ pub fn process_mint_new_edition_from_master_edition_via_token_logic<'a>(
     } else {
         edition_marker.insert_edition(edition)?
     }
-    edition_marker.serialize(&mut *edition_marker_info.data.borrow_mut())?;
+    // edition_marker.serialize(&mut *edition_marker_info.data.borrow_mut())?;
+    serialize_with_padding(edition_marker_info, &edition_marker);
 
     mint_limited_edition(
         program_id,

@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -44,12 +45,17 @@ pub fn process_convert_master_edition_v1_to_v2(
         return Err(MetadataError::OneTimeAuthMintSupplyMustBeZeroForConversion.into());
     }
 
-    MasterEditionV2 {
+    // MasterEditionV2 {
+    //     key: Key::MasterEditionV2,
+    //     supply: master_edition.supply,
+    //     max_supply: master_edition.max_supply,
+    // }
+    // .serialize(&mut *master_edition_info.try_borrow_mut_data()?)?;
+    let master_edition_v2 = MasterEditionV2 {
         key: Key::MasterEditionV2,
         supply: master_edition.supply,
         max_supply: master_edition.max_supply,
-    }
-    .serialize(&mut *master_edition_info.try_borrow_mut_data()?)?;
-
+    };
+    serialize_with_padding(master_edition_info, &master_edition_v2);
     Ok(())
 }

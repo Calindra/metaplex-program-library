@@ -93,6 +93,8 @@ impl borsh::de::BorshDeserialize for Metadata {
 
 #[cfg(test)]
 mod tests {
+    use std::io::Write;
+
     use borsh::{BorshDeserialize, BorshSerialize};
     use solana_program::account_info::AccountInfo;
     use solana_sdk::{signature::Keypair, signer::Signer};

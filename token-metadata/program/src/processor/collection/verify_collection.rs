@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::assert_signer;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
@@ -67,7 +68,8 @@ pub fn verify_collection(program_id: &Pubkey, accounts: &[AccountInfo]) -> Progr
     // If the NFT has collection data, we set it to be verified
     if let Some(collection) = &mut metadata.collection {
         collection.verified = true;
-        metadata.serialize(&mut *metadata_info.try_borrow_mut_data()?)?;
+        // metadata.serialize(&mut *metadata_info.try_borrow_mut_data()?)?;
+        serialize_with_padding(metadata_info, &metadata);
     }
     Ok(())
 }

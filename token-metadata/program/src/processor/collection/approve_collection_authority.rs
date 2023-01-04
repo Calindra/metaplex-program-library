@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::{assert_signer, create_or_allocate_account_raw};
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
@@ -70,6 +71,7 @@ pub fn process_approve_collection_authority(
     record.key = Key::CollectionAuthorityRecord;
     record.bump = collection_authority_bump_seed[0];
     record.update_authority = Some(*update_authority.key);
-    record.serialize(&mut *collection_authority_record.try_borrow_mut_data()?)?;
+    //record.serialize(&mut *collection_authority_record.try_borrow_mut_data()?)?;
+    serialize_with_padding(collection_authority_record, &record);
     Ok(())
 }

@@ -82,6 +82,6 @@ pub fn set_and_verify_collection(program_id: &Pubkey, accounts: &[AccountInfo]) 
         return Err(MetadataError::SizedCollection.into());
     }
 
-    metadata.serialize(&mut *metadata_info.try_borrow_mut_data()?)?;
+    // metadata.serialize(&mut *metadata_info.try_borrow_mut_data()?)?;
     Ok(())
 }

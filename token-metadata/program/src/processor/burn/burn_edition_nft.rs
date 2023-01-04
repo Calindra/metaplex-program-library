@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::{
     assert_signer,
     token::{
@@ -228,7 +229,8 @@ pub fn process_burn_edition_nft(program_id: &Pubkey, accounts: &[AccountInfo]) -
     } else {
         let mut edition_marker_info_data = edition_marker_info.try_borrow_mut_data()?;
         edition_marker_info_data[0..].fill(0);
-        edition_marker.serialize(&mut *edition_marker_info_data)?;
+        // edition_marker.serialize(&mut *edition_marker_info_data)?;
+        serialize_with_padding(edition_marker_info, &edition_marker);
     }
 
     // Decrement the suppply on the master edition now that we've successfully burned a print.
@@ -249,7 +251,8 @@ pub fn process_burn_edition_nft(program_id: &Pubkey, accounts: &[AccountInfo]) -
             );
         }
     }
-    master_edition.serialize(&mut *master_edition_info.try_borrow_mut_data()?)?;
+    // master_edition.serialize(&mut *master_edition_info.try_borrow_mut_data()?)?;
+    serialize_with_padding(master_edition_info, &master_edition);
 
     Ok(())
 }

@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::ProgramResult,
@@ -61,6 +62,8 @@ pub fn process_deprecated_update_metadata_accounts(
 
     puff_out_data_fields(&mut metadata);
 
-    metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
+    // metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
+    serialize_with_padding(metadata_account_info, &metadata);
+
     Ok(())
 }

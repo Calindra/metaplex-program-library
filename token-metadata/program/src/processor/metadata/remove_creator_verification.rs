@@ -1,4 +1,5 @@
 use borsh::BorshSerialize;
+use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::assert_signer;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
@@ -41,7 +42,8 @@ pub fn process_remove_creator_verification(
     } else {
         return Err(MetadataError::NoCreatorsPresentOnMetadata.into());
     }
-    metadata.serialize(&mut *metadata_info.try_borrow_mut_data()?)?;
+    // metadata.serialize(&mut *metadata_info.try_borrow_mut_data()?)?;
+    serialize_with_padding(metadata_info, &metadata);
 
     Ok(())
 }
