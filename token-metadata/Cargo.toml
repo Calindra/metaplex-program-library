@@ -1,7 +1,7 @@
 [workspace]
 members=[
   "program",
-  "cli"
+  #"cli"
 ]
 
 [profile.release]
