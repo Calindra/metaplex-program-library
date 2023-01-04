@@ -1,5 +1,4 @@
 use borsh::{maybestd::io::Error as BorshError, BorshDeserialize, BorshSerialize};
-use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::{create_or_allocate_account_raw, token::get_mint_authority};
 use solana_program::{
     account_info::AccountInfo, entrypoint::ProgramResult, program_option::COption, pubkey,
@@ -195,8 +194,8 @@ pub fn process_create_metadata_accounts_logic(
     let (_, edition_bump_seed) = Pubkey::find_program_address(edition_seeds, program_id);
     metadata.edition_nonce = Some(edition_bump_seed);
     
-    // metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
-    serialize_with_padding(metadata_account_info, &metadata);
+    metadata.serialize(&mut *metadata_account_info.data.borrow_mut())?;
+    // serialize_with_padding(metadata_account_info, &metadata);
     println!("2 -> metadata_account_info.data = {:?}", metadata_account_info.data_len());
 
     Ok(())

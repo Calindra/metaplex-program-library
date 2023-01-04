@@ -1,5 +1,4 @@
 use borsh::BorshSerialize;
-use cartesi_solana::account_manager::serialize_with_padding;
 use mpl_utils::create_or_allocate_account_raw;
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
@@ -100,8 +99,8 @@ pub fn process_create_master_edition(
     if metadata_account_info.is_writable {
         let mut metadata_mut = Metadata::from_account_info(metadata_account_info)?;
         metadata_mut.token_standard = Some(TokenStandard::NonFungible);
-        //metadata_mut.serialize(&mut *metadata_account_info.try_borrow_mut_data()?)?;
-        serialize_with_padding(metadata_account_info, &metadata_mut);
+        metadata_mut.serialize(&mut *metadata_account_info.try_borrow_mut_data()?)?;
+        // serialize_with_padding(metadata_account_info, &metadata_mut);
     }
 
     // While you can't mint any more of your master record, you can
