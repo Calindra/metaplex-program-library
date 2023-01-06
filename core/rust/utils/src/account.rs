@@ -1,13 +1,12 @@
-use cartesi_solana::anchor_lang::prelude::Rent;
 use solana_program::{
     account_info::AccountInfo,
     entrypoint::ProgramResult,
     msg,
     program::{invoke, invoke_signed},
     pubkey::Pubkey,
-    //rent::Rent,
+    rent::Rent,
     system_instruction,
-    // sysvar::Sysvar,
+    sysvar::Sysvar,
 };
 
 /// Create account almost from scratch, lifted from

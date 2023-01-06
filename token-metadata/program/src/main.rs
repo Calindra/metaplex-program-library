@@ -1,8 +1,10 @@
-use cartesi_solana::anchor_lang::solana_program::entrypoint::ProgramResult;
 use cartesi_solana::executor::create_executor;
 
 use mpl_token_metadata::{error::MetadataError, processor};
-use solana_program::{account_info::AccountInfo, program_error::PrintProgramError, pubkey::Pubkey};
+use solana_program::{
+    account_info::AccountInfo, entrypoint::ProgramResult, program_error::PrintProgramError,
+    pubkey::Pubkey,
+};
 pub(crate) use std::io;
 
 fn main() -> io::Result<()> {
