@@ -18,7 +18,8 @@ solana-program = "1.10"
 borsh = "0.9.3"
 arrayref = "0.3.6"
 spl-token = { version = "3.2.0", features = ["no-entrypoint"], optional = true }
-cartesi-solana = { path = "../../../../cartesi-solana" }
+# cartesi-solana = { path = "../../../../cartesi-solana" }
+cartesi-solana = "0.3.0"
 
 [features]
 token = ["spl-token"]

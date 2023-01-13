@@ -27,7 +27,8 @@ shank = { version = "0.0.11" }
 serde = { version = "1.0.136", optional = true }
 serde_with = { version = "1.12.0", optional = true }
 mpl-utils = { path = "../../core/rust/utils" }
-cartesi-solana = { path = "../../../cartesi-solana" }
+# cartesi-solana = { path = "../../../cartesi-solana" }
+cartesi-solana = "0.3.0"
 
 [dev-dependencies]
 solana-sdk = "1.10"
